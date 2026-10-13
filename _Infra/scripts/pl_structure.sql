@@ -2,89 +2,110 @@
 
 begin;
 
-create sequence if not exists seq_pl_positions;
-create sequence if not exists seq_pl_equipment_types;
-create sequence if not exists seq_pl_users;
-create sequence if not exists seq_pl_packs;
-create sequence if not exists seq_pl_base_units;
-create sequence if not exists seq_pl_units;
-create sequence if not exists seq_pl_param_types;
-create sequence if not exists seq_pl_parameters;
-create sequence if not exists seq_pl_temp_corrections;
+do $$
+begin
+    execute $sql$ create sequence if not exists seq_pl_positions $sql$;
+    execute $sql$ create sequence if not exists seq_pl_equipment_types $sql$;
+    execute $sql$ create sequence if not exists seq_pl_users $sql$;
+    execute $sql$ create sequence if not exists seq_pl_packs $sql$;
+    execute $sql$ create sequence if not exists seq_pl_base_units $sql$;
+    execute $sql$ create sequence if not exists seq_pl_units $sql$;
+    execute $sql$ create sequence if not exists seq_pl_param_types $sql$;
+    execute $sql$ create sequence if not exists seq_pl_parameters $sql$;
+    execute $sql$ create sequence if not exists seq_pl_temp_corrections $sql$;
 
-create table if not exists pl_positions (
-    id integer primary key default nextval('seq_pl_positions'),
-    code varchar(30) not null unique,
-    name varchar(100) not null
-);
+    execute $sql$
+        create table if not exists pl_positions (
+            id integer primary key default nextval('seq_pl_positions'),
+            code varchar(30) not null unique,
+            name varchar(100) not null
+        )
+    $sql$;
 
-create table if not exists pl_equipment_types (
-    id integer primary key default nextval('seq_pl_equipment_types'),
-    code varchar(30) not null unique,
-    name varchar(100) not null
-);
+    execute $sql$
+        create table if not exists pl_equipment_types (
+            id integer primary key default nextval('seq_pl_equipment_types'),
+            code varchar(30) not null unique,
+            name varchar(100) not null
+        )
+    $sql$;
 
-create table if not exists pl_users (
-    id integer primary key default nextval('seq_pl_users'),
-    code varchar(30) not null unique,
-    name varchar(150) not null,
-    position_id integer not null
-);
+    execute $sql$
+        create table if not exists pl_users (
+            id integer primary key default nextval('seq_pl_users'),
+            code varchar(30) not null unique,
+            name varchar(150) not null,
+            position_id integer not null
+        )
+    $sql$;
 
-create table if not exists pl_packs (
-    id integer primary key default nextval('seq_pl_packs'),
-    code varchar(30) not null unique,
-    user_id integer not null,
-    equipment_type_id integer not null,
-    measured_at timestamp not null
-);
+    execute $sql$
+        create table if not exists pl_packs (
+            id integer primary key default nextval('seq_pl_packs'),
+            code varchar(30) not null unique,
+            user_id integer not null,
+            equipment_type_id integer not null,
+            measured_at timestamp not null
+        )
+    $sql$;
 
-create table if not exists pl_base_units (
-    id integer primary key default nextval('seq_pl_base_units'),
-    code varchar(30) not null unique,
-    name varchar(100) not null
-);
+    execute $sql$
+        create table if not exists pl_base_units (
+            id integer primary key default nextval('seq_pl_base_units'),
+            code varchar(30) not null unique,
+            name varchar(100) not null
+        )
+    $sql$;
 
-create table if not exists pl_units (
-    id integer primary key default nextval('seq_pl_units'),
-    code varchar(30) not null unique,
-    name varchar(50) not null,
-    base_unit_id integer not null
-);
+    execute $sql$
+        create table if not exists pl_units (
+            id integer primary key default nextval('seq_pl_units'),
+            code varchar(30) not null unique,
+            name varchar(50) not null,
+            base_unit_id integer not null
+        )
+    $sql$;
 
-create table if not exists pl_param_types (
-    id integer primary key default nextval('seq_pl_param_types'),
-    code varchar(30) not null unique,
-    name varchar(100) not null,
-    unit_id integer not null
-);
+    execute $sql$
+        create table if not exists pl_param_types (
+            id integer primary key default nextval('seq_pl_param_types'),
+            code varchar(30) not null unique,
+            name varchar(100) not null,
+            unit_id integer not null
+        )
+    $sql$;
 
-create table if not exists pl_parameters (
-    id integer primary key default nextval('seq_pl_parameters'),
-    code varchar(30) not null unique,
-    pack_id integer not null,
-    value varchar(10) not null,
-    param_type_id integer not null
-);
+    execute $sql$
+        create table if not exists pl_parameters (
+            id integer primary key default nextval('seq_pl_parameters'),
+            code varchar(30) not null unique,
+            pack_id integer not null,
+            value varchar(10) not null,
+            param_type_id integer not null
+        )
+    $sql$;
 
-create table if not exists pl_temp_corrections (
-    id integer primary key default nextval('seq_pl_temp_corrections'),
-    code varchar(30) not null unique,
-    range_label varchar(20) not null,
-    temp_from numeric(5,1),
-    temp_to numeric(5,1),
-    correction numeric(3,1) not null
-);
+    execute $sql$
+        create table if not exists pl_temp_corrections (
+            id integer primary key default nextval('seq_pl_temp_corrections'),
+            code varchar(30) not null unique,
+            range_label varchar(20) not null,
+            temp_from numeric(5,1),
+            temp_to numeric(5,1),
+            correction numeric(3,1) not null
+        )
+    $sql$;
 
-alter sequence seq_pl_positions owned by pl_positions.id;
-alter sequence seq_pl_equipment_types owned by pl_equipment_types.id;
-alter sequence seq_pl_users owned by pl_users.id;
-alter sequence seq_pl_packs owned by pl_packs.id;
-alter sequence seq_pl_base_units owned by pl_base_units.id;
-alter sequence seq_pl_units owned by pl_units.id;
-alter sequence seq_pl_param_types owned by pl_param_types.id;
-alter sequence seq_pl_parameters owned by pl_parameters.id;
-alter sequence seq_pl_temp_corrections owned by pl_temp_corrections.id;
+    execute $sql$ alter sequence seq_pl_positions owned by pl_positions.id $sql$;
+    execute $sql$ alter sequence seq_pl_equipment_types owned by pl_equipment_types.id $sql$;
+    execute $sql$ alter sequence seq_pl_users owned by pl_users.id $sql$;
+    execute $sql$ alter sequence seq_pl_packs owned by pl_packs.id $sql$;
+    execute $sql$ alter sequence seq_pl_base_units owned by pl_base_units.id $sql$;
+    execute $sql$ alter sequence seq_pl_units owned by pl_units.id $sql$;
+    execute $sql$ alter sequence seq_pl_param_types owned by pl_param_types.id $sql$;
+    execute $sql$ alter sequence seq_pl_parameters owned by pl_parameters.id $sql$;
+    execute $sql$ alter sequence seq_pl_temp_corrections owned by pl_temp_corrections.id $sql$;
+end $$;
 
 commit;
 
@@ -93,73 +114,6 @@ commit;
 
 begin;
 
-insert into pl_positions (code, name)
-select 'POS-001', 'Начальник метеопоста'
-where not exists (select 1 from pl_positions where code = 'POS-001');
-
-insert into pl_positions (code, name)
-select 'POS-002', 'Метеоролог-наблюдатель'
-where not exists (select 1 from pl_positions where code = 'POS-002');
-
-insert into pl_positions (code, name)
-select 'POS-003', 'Расчетчик'
-where not exists (select 1 from pl_positions where code = 'POS-003');
-
-insert into pl_equipment_types (code, name)
-select 'EQP-DMK', 'ДМК'
-where not exists (select 1 from pl_equipment_types where code = 'EQP-DMK');
-
-insert into pl_equipment_types (code, name)
-select 'EQP-VR', 'ВР'
-where not exists (select 1 from pl_equipment_types where code = 'EQP-VR');
-
-insert into pl_base_units (code, name)
-select v.code, v.name
-from (values ('LENGTH','Длина'),('TEMPERATURE','Температура'),('PRESSURE','Давление'),
-             ('ANGLE','Угол'),('SPEED','Скорость')) as v(code, name)
-where not exists (select 1 from pl_base_units where pl_base_units.code = v.code);
-
-insert into pl_units (code, name, base_unit_id)
-select v.code, v.name, (select id from pl_base_units where code = v.base_code)
-from (values ('M','метр','LENGTH'),
-             ('C','градус Цельсия','TEMPERATURE'),
-             ('MMHG','мм рт. ст.','PRESSURE'),
-             ('MIL','деление угломера','ANGLE'),
-             ('MPS','метр в секунду','SPEED')) as v(code, name, base_code)
-where not exists (select 1 from pl_units where pl_units.code = v.code);
-
-insert into pl_param_types (code, name, unit_id)
-select v.code, v.name, (select id from pl_units where code = v.unit_code)
-from (values ('HEIGHT','Высота метеопоста','M'),
-             ('TEMPERATURE','Температура','C'),
-             ('PRESSURE','Давление','MMHG'),
-             ('WIND_DIRECTION','Направление ветра','MIL'),
-             ('WIND_SPEED','Скорость ветра','MPS'),
-             ('BULLET_DRIFT','Дальность сноса пуль','M')) as v(code, name, unit_code)
-where not exists (select 1 from pl_param_types where pl_param_types.code = v.code);
-
-insert into pl_temp_corrections (code, range_label, temp_from, temp_to, correction)
-select v.code, v.range_label, v.temp_from, v.temp_to, v.correction
-from (values
-    ('TV-01', 'Ниже 0', null,  0,    0.0),
-    ('TV-02', '0-5',    0,     5,    0.5),
-    ('TV-03', '10-15',  10,    15,   1.0),
-    ('TV-04', '20',     20,    20,   1.5),
-    ('TV-05', '25',     25,    25,   2.0),
-    ('TV-06', '30',     30,    30,   3.5),
-    ('TV-07', '40',     40,    40,   4.5)
-) as v(code, range_label, temp_from, temp_to, correction)
-where not exists (select 1 from pl_temp_corrections where pl_temp_corrections.code = v.code);
-
--- Пользователи (минимум 3)
-insert into pl_users (code, name, position_id)
-select v.code, v.name, (select id from pl_positions where code = v.pos_code)
-from (values ('USR-001','Волков Егор','POS-001'),
-             ('USR-002','Морозова Анна','POS-002'),
-             ('USR-003','Зайцев Павел','POS-003')) as v(code, name, pos_code)
-where not exists (select 1 from pl_users where pl_users.code = v.code);
-
--- Пачки и параметры генерируются циклом в PL/pgSQL
 do $$
 declare
     v_user_ids   integer[];
@@ -175,6 +129,75 @@ declare
     v_bullet     integer;
     i            integer;
 begin
+    -- Справочники (выполняются как обычные SQL-команды внутри PL/pgSQL-блока)
+
+    insert into pl_positions (code, name)
+    select 'POS-001', 'Начальник метеопоста'
+    where not exists (select 1 from pl_positions where code = 'POS-001');
+
+    insert into pl_positions (code, name)
+    select 'POS-002', 'Метеоролог-наблюдатель'
+    where not exists (select 1 from pl_positions where code = 'POS-002');
+
+    insert into pl_positions (code, name)
+    select 'POS-003', 'Расчетчик'
+    where not exists (select 1 from pl_positions where code = 'POS-003');
+
+    insert into pl_equipment_types (code, name)
+    select 'EQP-DMK', 'ДМК'
+    where not exists (select 1 from pl_equipment_types where code = 'EQP-DMK');
+
+    insert into pl_equipment_types (code, name)
+    select 'EQP-VR', 'ВР'
+    where not exists (select 1 from pl_equipment_types where code = 'EQP-VR');
+
+    insert into pl_base_units (code, name)
+    select v.code, v.name
+    from (values ('LENGTH','Длина'),('TEMPERATURE','Температура'),('PRESSURE','Давление'),
+                 ('ANGLE','Угол'),('SPEED','Скорость')) as v(code, name)
+    where not exists (select 1 from pl_base_units where pl_base_units.code = v.code);
+
+    insert into pl_units (code, name, base_unit_id)
+    select v.code, v.name, (select id from pl_base_units where code = v.base_code)
+    from (values ('M','метр','LENGTH'),
+                 ('C','градус Цельсия','TEMPERATURE'),
+                 ('MMHG','мм рт. ст.','PRESSURE'),
+                 ('MIL','деление угломера','ANGLE'),
+                 ('MPS','метр в секунду','SPEED')) as v(code, name, base_code)
+    where not exists (select 1 from pl_units where pl_units.code = v.code);
+
+    insert into pl_param_types (code, name, unit_id)
+    select v.code, v.name, (select id from pl_units where code = v.unit_code)
+    from (values ('HEIGHT','Высота метеопоста','M'),
+                 ('TEMPERATURE','Температура','C'),
+                 ('PRESSURE','Давление','MMHG'),
+                 ('WIND_DIRECTION','Направление ветра','MIL'),
+                 ('WIND_SPEED','Скорость ветра','MPS'),
+                 ('BULLET_DRIFT','Дальность сноса пуль','M')) as v(code, name, unit_code)
+    where not exists (select 1 from pl_param_types where pl_param_types.code = v.code);
+
+    insert into pl_temp_corrections (code, range_label, temp_from, temp_to, correction)
+    select v.code, v.range_label, v.temp_from, v.temp_to, v.correction
+    from (values
+        ('TV-01', 'Ниже 0', null,  0,    0.0),
+        ('TV-02', '0-5',    0,     5,    0.5),
+        ('TV-03', '10-15',  10,    15,   1.0),
+        ('TV-04', '20',     20,    20,   1.5),
+        ('TV-05', '25',     25,    25,   2.0),
+        ('TV-06', '30',     30,    30,   3.5),
+        ('TV-07', '40',     40,    40,   4.5)
+    ) as v(code, range_label, temp_from, temp_to, correction)
+    where not exists (select 1 from pl_temp_corrections where pl_temp_corrections.code = v.code);
+
+    -- Пользователи (минимум 3)
+    insert into pl_users (code, name, position_id)
+    select v.code, v.name, (select id from pl_positions where code = v.pos_code)
+    from (values ('USR-001','Волков Егор','POS-001'),
+                 ('USR-002','Морозова Анна','POS-002'),
+                 ('USR-003','Зайцев Павел','POS-003')) as v(code, name, pos_code)
+    where not exists (select 1 from pl_users where pl_users.code = v.code);
+
+    -- Пачки и параметры (минимум 20 пачек, по 5 параметров)
     select array_agg(id) into v_user_ids from pl_users;
 
     for i in 1..20 loop
@@ -197,7 +220,7 @@ begin
         v_height   := floor(random() * 450)::int - 50;
         v_temp     := round((random() * 116 - 58)::numeric, 1);
         v_pressure := 500 + floor(random() * 401)::int;
-        v_wind_dir := floor(random() * 60)::int;                    
+        v_wind_dir := floor(random() * 60)::int;
 
         insert into pl_parameters (code, pack_id, value, param_type_id)
         values ('PL-PRM-' || lpad((i * 10 + 1)::text, 4, '0'), v_pack_id, v_height::text,
