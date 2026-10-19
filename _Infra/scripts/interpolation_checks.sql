@@ -48,5 +48,5 @@ begin
     raise notice 't=12: точки (%,%)-(%,%), результат = %, ожидалось % -> %',
         v_points.x0, v_points.y0, v_points.x1, v_points.y1,
         v_result, v_expected,
-        case when v_result = v_expected then 'сошолсь' else 'не сошлось' end;
+        case when v_result = v_expected then 'сошлось' else 'не сошлось' end;
 end $$;
